@@ -20,15 +20,37 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_FEATURE:
+      const addedFeaturesList = [...state.car.features];
+      const additionalFeaturesList = state.additionalFeatures.filter(
+        (feature) => {
+          if (feature.id !== action.payload.id) return feature;
+        }
+      );
       return {
+        // ...state,
+        // car: {
+        //   ...state.car,
+        //   features: [...state.car.features, action.payload],
+        //   price: state.car.price + action.payload.price,
+        // },
         ...state,
+        additionalFeatures: additionalFeaturesList,
+        additionalPrice: state.additionalPrice + action.payload.price,
         car: {
           ...state.car,
           features: [...state.car.features, action.payload],
-          price: state.car.price + action.payload.price,
+          additionalPrice: state.additionalPrice + action.payload.price,
         },
       };
     case DELETE_FEATURE:
+      // const addedFeatList = [...state.car.features];
+      // const removeFeatureList = state.car.features.filter(
+      //   (feature) => {
+      //     if (feature.id !== action.payload.id) return feature;
+      //   } else {
+      //     additionalFeatures.push(action.payload)
+      //   }
+      // );
       return {
         ...state,
         car: {
@@ -37,11 +59,13 @@ export default (state = initialState, action) => {
             ...state.car.features.filter((feature) => {
               if (feature.id !== action.payload.id) {
                 return feature;
+              } else {
+                state.additionalFeatures.push(action.payload);
               }
             }),
           ],
-          price: state.car.price - action.payload.price,
         },
+        additionalPrice: state.additionalPrice - action.payload.price,
       };
     default:
       return state;
