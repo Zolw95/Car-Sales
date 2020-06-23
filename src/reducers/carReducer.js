@@ -20,7 +20,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_FEATURE:
-      const addedFeaturesList = [...state.car.features];
+      // DELETE FEATURE FROM ADDITIONAL FEATURES LIST [ON ADD]
       const additionalFeaturesList = state.additionalFeatures.filter(
         (feature) => {
           if (feature.id !== action.payload.id) return feature;
@@ -35,12 +35,11 @@ export default (state = initialState, action) => {
         // },
         ...state,
         additionalFeatures: additionalFeaturesList,
-        additionalPrice: state.additionalPrice + action.payload.price,
         car: {
           ...state.car,
           features: [...state.car.features, action.payload],
-          additionalPrice: state.additionalPrice + action.payload.price,
         },
+        additionalPrice: state.additionalPrice + action.payload.price,
       };
     case DELETE_FEATURE:
       // const addedFeatList = [...state.car.features];
